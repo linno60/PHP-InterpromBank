@@ -1,0 +1,34 @@
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card card-block">
+              <h4 class="card-title text-xs-center">Авторизация</h4>
+              <div class="card-text">
+                  <form class="form-horizontal" role="form" method="POST" action="/login">
+                      
+                      <div class="form-group">
+                              <input id="email" type="email" class="form-control" name="email" required autofocus placeholder="Email">
+                              <div class="clearfix"></div>
+                      </div>
+
+                      <div class="form-group">
+                              <input id="password" type="password" class="form-control" name="password" required placeholder="password">
+                          <div class="clearfix"></div>
+                      </div>
+
+                      <div class="form-group row">
+                          <div class="col-md-6">
+                              <button type="submit" class="btn btn-primary">
+                                  Войти
+                              </button>
+                          </div>
+
+                          <div class="col-md-6 text-xs-right">
+                              <a href="/#!/register">Регистрация</a>
+                          </div>
+                      </div>
+                  </form>
+              </div>
+        </div>
+    </div>
+</div>

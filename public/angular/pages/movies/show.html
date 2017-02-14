@@ -1,0 +1,14 @@
+<div ng-if="movie.success" class="container">
+	<div class="col-md-3">
+		<img ng-src="<% movie.data.image %>" alt="<% movie.data.title %>" class="img-fluid img-thumbnail">
+	</div>
+
+	<div class="col-md-9">
+		<h3><% movie.data.title %></h3>
+		<% movie.data.description %>
+	</div>	
+</div>
+
+<div ng-if="!movie.success">
+	<h4>404</h4>
+</div>

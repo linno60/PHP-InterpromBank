@@ -1,0 +1,37 @@
+<div class="float-button">+</div>
+
+<div class="modal fade" id="newMovie" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title">Добавить новый фильм</h4>
+      </div>
+      <div class="modal-body" ng-if="is_show">
+        <div class="loader-container" ng-show="is_load">
+            <div class="loader"></div>
+        </div>
+
+        <div ng-show="!is_load">
+          <div ng-show="error" class="alert alert-danger"><% error %></div>
+          
+          <div ng-show="!error">
+            <movie-info movie="movie"></movie-info>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div class="row">
+            <div class="col-md-9">
+                <input type="text" class="form-control" ng-model="movie_url">
+            </div>
+
+            <div class="col-md-3" style="padding-left: 0">
+                <button type="button" class="btn btn-danger btn-block" ng-click="addMovie()">Добавить</button>
+            </div>
+        </div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

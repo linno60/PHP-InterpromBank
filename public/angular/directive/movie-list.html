@@ -1,0 +1,19 @@
+<div class="movies-list" ng-if="filtered_movies.length > 0">
+    <movie-info ng-repeat="movie in filtered_movies" movie="movie"></movie-info>
+    <ul uib-pagination 
+        ng-if="filtered_movies.length > 0 && show_paginate"
+        ng-change="page_changed(currentPage)"
+        boundary-links="true" 
+        total-items="movies.length" 
+        items-per-page="per_page" 
+        ng-model="currentPage" 
+        class="pagination" 
+        direction-links="false"
+        previous-text="&lsaquo;" 
+        next-text="&rsaquo;" 
+        first-text="&laquo;" 
+        last-text="&raquo;">
+    </ul>
+</div>
+
+

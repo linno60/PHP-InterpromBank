@@ -7,27 +7,41 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Movie;
 use App\User;
+use DB;
 
 class UserController extends Controller
 {	
 
-	public function favorite_update(Request $request) {
+		public function im(Request $request)
+		{
+			
+			$arResult = array(
+				'success' => false
+			);
 
-		if(\Auth::check()) {
-			$user = User::find(\Auth::id());
+			// $request->hash_id = 18785157118189;
 
-			$movie_id = $request->movie_id;
+			try {
+					$result = array();
+					if($request->hash_id) {
+						$output = array();
+						$pdo = DB::connection()->getPdo();
+						$stmt = $pdo->prepare("EXEC et_lkk_session_inf @hash = ".$request->hash_id.", @Errortxt = '', @Succes = ''");
+						$stmt->execute();
 
-			$is_favorite = $user->is_favorite($movie_id);
+						while ($row = $stmt->fetch(\PDO::FETCH_ASSOC, \PDO::FETCH_ORI_NEXT)) {
+						    $result[] = $row;
+						  }
 
-			$user->favorites()->toggle($movie_id);
-		} else {
-			$is_favorite = true;
+						$arResult = ['success' => true, 'data' => (array)$result ];
+					}
+			} catch (PDOException $e) {
+	    	print $e->getMessage();
+
+	    }
+			
+			return response()->json($arResult);
 		}
-	
-
-	    return array('is_favorite' => !$is_favorite);
-	}
 
 
 }

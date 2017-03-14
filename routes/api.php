@@ -24,6 +24,7 @@ Route::group(['as' => 'api.', 'namespace' => 'API'], function () {
 			});
 
 			Route::post('/requests', 'RequestController@index');
+			Route::post('/check_account', 'RequestController@check_account');
 			Route::post('/im', 'UserController@im');
 
 	});

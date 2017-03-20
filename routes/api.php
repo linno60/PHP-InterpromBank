@@ -22,8 +22,11 @@ Route::group(['as' => 'api.', 'namespace' => 'API'], function () {
 				Route::post('/send-code', ['uses' => 'AuthController@send_code']);
 				Route::post('/confirm-code', ['uses' => 'AuthController@confirm_code']);
 			});
+			Route::post('/files/list_by_app/{id}', 'FileController@listByApp');
 
 			Route::post('/requests', 'RequestController@index');
+			Route::post('/requests/{id}', 'RequestController@show');
+
 			Route::post('/check_account', 'RequestController@check_account');
 			Route::post('/im', 'UserController@im');
 

@@ -10,6 +10,7 @@ use DB;
 class RequestController extends Controller
 {	
 
+	// Получение списка заявок
 	public function index(Request $request)
 	{
 		
@@ -37,7 +38,33 @@ class RequestController extends Controller
 		return response()->json($arResult);
 	}
 
-		public function check_account(Request $request)
+	public function show(Request $request, $id)
+	{
+			
+			$arResult = array('success' => false);
+
+			try {
+
+				$slq = "EXEC et_lkk_list_app @hash_id = ".$request->hash_id.", @Errortxt = '', @Succes = '',  @id = ".$id;
+				$result = DB::select(trim($slq));
+				
+				$result = (array) $result;
+
+				if(!empty($result)) {
+					$arResult = ['success' => true, 'data' => (array)$result ];
+				}
+
+			} catch (Exception $e) {
+	    	$arResult['error'] = $e->getMessage();
+
+	    }
+			
+			return response()->json($arResult);
+		}
+
+
+	// Проверка счета
+	public function check_account(Request $request)
 		{
 			
 			$arResult = array('success' => false);

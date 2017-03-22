@@ -23,6 +23,7 @@ Route::group(['as' => 'api.', 'namespace' => 'API'], function () {
 				Route::post('/confirm-code', ['uses' => 'AuthController@confirm_code']);
 			});
 			Route::post('/files/list_by_app/{id}', 'FileController@listByApp');
+			Route::post('/files/list_by_app/{id}/upload', 'FileController@sendFile');
 
 			Route::post('/requests', 'RequestController@index');
 			Route::post('/requests/{id}', 'RequestController@show');

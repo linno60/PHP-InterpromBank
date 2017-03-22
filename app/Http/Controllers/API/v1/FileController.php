@@ -14,17 +14,41 @@ class FileController extends Controller
 	public function listByApp(Request $request, $id)
 	{
 			
+			$mimes = new \Mimey\MimeTypes;
 			$arResult = array('success' => false);
 
 			try {
 
 				$slq = "EXEC lkk_apphash_filelist @app_hash = '".$id."'";
-				$result = DB::select(trim($slq));
-				
-				$result = (array) $result;
+				$result = (array) DB::select(trim($slq));
 
 				if(!empty($result)) {
-					$arResult = ['success' => true, 'data' => (array)$result ];
+					$arFiles = [];
+
+					foreach ($result as $key => $file) {
+						$file = (array) $file;
+						if($file['direction_id'] == 2 && !$file['is_url']) {
+							// $file['file_id'] = 32;
+							
+							$file_sql = "EXEC lkk_apphash_fileprocess @app_hash = '".$id."', @file_id = '".$file['file_id']."', @filename = null,  @filecontent  = null";
+							$file['file'] = (array) DB::select(trim($file_sql))[0];
+							if($file['file']['file_name']) {
+								$file['file']['base64'] = base64_encode($file['file']['file_content']);
+								$pathinfo = pathinfo($file['file']['file_name']);
+								$file['file']['extension'] = $pathinfo['extension'];
+								$file['file']['mime_type'] = $mimes->getMimeType($file['file']['extension']);
+								$file['file']['src'] = 'data:'.$file['file']['mime_type'].';base64,'.$file['file']['base64'];
+								
+							}
+		
+							unset($file['file']['file_content']);
+						}
+
+						$arFiles[] = $file;
+
+					}
+
+					$arResult = ['success' => true, 'data' =>  $arFiles];
 				}
 
 			} catch (QueryException $e) {
@@ -34,6 +58,29 @@ class FileController extends Controller
 			
 			return response()->json($arResult);
 		}
+
+		public function sendFile(Request $request, $app_id)
+		{
+				
+				$arResult = array('success' => false);
+
+				try {
+
+					$file = $request->filecontent;
+
+					$slq = "EXEC lkk_apphash_fileprocess @app_hash = '".$app_id."', @file_id = '".$request->file_id."', @filename = '".$request->filename."',  @filecontent  = ".DB::raw('0x'.bin2hex($file));
+					$result = (array) DB::select(trim($slq));
+					$result = (array) $result[0];
+
+						$arResult = ['success' => ($result['ret'] == 0 ? true : false), 'data' =>  $result, 'error' => $result['ret_descr']];
+
+				} catch (QueryException $e) {
+		    	$arResult['error'] = $e->getMessage();
+
+		    }
+				
+				return response()->json($arResult);
+			}
 
 
 

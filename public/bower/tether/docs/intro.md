@@ -474,7 +474,7 @@ The full list of options which can be passed to the `Tether` constructor and
   image of `attachment`.
 - `offset`: A string of the form `'vert-offset horiz-offset'`
   - `vert-offset` and `horiz-offset` can be of the form `"20px"` or `"55%"`
-- `targetOffset`: A string similar to `offset`, but refering to the offset of the target
+- `targetOffset`: A string similar to `offset`, but referring to the offset of the target
 - `targetModifier`: Can be set to `'visible'` or `'scroll-handle'`
 - `enabled`: Should the tether be enabled initially? Defaults to `true`.
 - `classes`: A hash of classes which should be changed or disabled

@@ -7,6 +7,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Database\QueryException;
 use DB;
+use Storage;
+use File;
 
 class FileController extends Controller
 {	
@@ -27,7 +29,7 @@ class FileController extends Controller
 
 					foreach ($result as $key => $file) {
 						$file = (array) $file;
-						if($file['direction_id'] == 2 && !$file['is_url']) {
+						if(!$file['is_url']) {
 							// $file['file_id'] = 32;
 							
 							$file_sql = "EXEC lkk_apphash_fileprocess @app_hash = '".$id."', @file_id = '".$file['file_id']."', @filename = null,  @filecontent  = null";
@@ -66,7 +68,7 @@ class FileController extends Controller
 
 				try {
 
-					$file = $request->filecontent;
+					$file = File::get($request->file('file_conntent'));
 
 					$slq = "EXEC lkk_apphash_fileprocess @app_hash = '".$app_id."', @file_id = '".$request->file_id."', @filename = '".$request->filename."',  @filecontent  = ".DB::raw('0x'.bin2hex($file));
 					$result = (array) DB::select(trim($slq));
@@ -76,7 +78,6 @@ class FileController extends Controller
 
 				} catch (QueryException $e) {
 		    	$arResult['error'] = $e->getMessage();
-
 		    }
 				
 				return response()->json($arResult);

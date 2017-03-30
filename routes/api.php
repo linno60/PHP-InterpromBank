@@ -21,6 +21,7 @@ Route::group(['as' => 'api.', 'namespace' => 'API'], function () {
 			Route::group(['prefix' => 'auth'], function () {
 				Route::post('/send-code', ['uses' => 'AuthController@send_code']);
 				Route::post('/confirm-code', ['uses' => 'AuthController@confirm_code']);
+				Route::post('/manage_email', ['uses' => 'AuthController@manage_email']);
 			});
 			Route::post('/files/list_by_app/{id}', 'FileController@listByApp');
 			Route::post('/files/list_by_app/{id}/upload', 'FileController@sendFile');

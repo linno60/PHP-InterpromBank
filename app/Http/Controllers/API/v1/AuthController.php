@@ -36,4 +36,41 @@ class AuthController extends Controller
 		return response()->json($result);
 	}
 
+	public function manage_email(Request $request)
+	{
+		
+		$arResult = array('success' => false);
+		$action = ($request->action && $request->action >= 0) ? $request->action : 0; 
+
+		try {			
+			$slq = "exec et_lkk_manage_email @szEmailAuth = 'r.kovjogin@gmail.com', @action = ".$action;
+			
+			if($action > 0) {
+				$slq .= ", @szEmail = '".$request->new_email."', ";
+				$slq .= "@check_agent_alldeals = '".$request->check_agent_alldeals."', ";
+				$slq .= "@check_agent_comis = '".$request->check_agent_comis."', ";
+				$slq .= "@descr = '".$request->descr."'; ";
+			}
+
+			$result = DB::select(trim($slq));
+			
+			$arResult['data'] = $result;
+			$arResult['success'] = true;			
+			
+		} catch (QueryException $e) {
+	    	$arResult['error'] = $e->getMessage();
+	  }
+
+		return response()->json($arResult);
+	}
+
 }
+
+
+// procedure [dbo].[et_lkk_manage_email]
+// @szEmailAuth varchar(30)
+// ,@action int -- 0 - листинг
+// ,@szEmail varchar(50) = null
+// ,@check_agent_alldeals bit = null
+// ,@check_agent_comis bit = null
+// ,@descr varchar(255) = null
